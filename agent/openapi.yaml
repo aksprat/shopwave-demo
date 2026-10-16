@@ -4,7 +4,7 @@ info:
   description: Tools for the ShopWave support agent, registered in DO Action Gateway.
   version: 1.0.0
 servers:
-  - url: https://REPLACE-WITH-YOUR-APP.ondigitalocean.app
+  - url: https://shopwave-demo-4xjia.ondigitalocean.app
 paths:
   /orders/{order_id}:
     get:

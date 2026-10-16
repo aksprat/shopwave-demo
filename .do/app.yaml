@@ -25,3 +25,25 @@ services:
       - key: FAIL_MODE
         scope: RUN_TIME
         value: "none"
+  - name: mcp-server
+    github:
+      repo: aksprat/shopwave-demo
+      branch: main
+      deploy_on_push: true
+    source_dir: backend
+    dockerfile_path: backend/Dockerfile
+    run_command: python mcp_server.py
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: apps-s-1vcpu-1gb
+    envs:
+      - key: STORE_API_URL
+        scope: RUN_TIME
+        value: "https://shopwave-demo-4xjia.ondigitalocean.app"
+      - key: KB_RETRIEVE_URL
+        scope: RUN_TIME
+        value: "https://kbaas.do-ai.run/v1/3d90a71c-c94f-11f1-aee4-4e013e2ddde4/retrieve"
+      - key: KB_ACCESS_KEY
+        scope: RUN_TIME
+        type: SECRET
+        value: "REPLACE_WITH_YOUR_KB_OR_MODEL_ACCESS_KEY"
