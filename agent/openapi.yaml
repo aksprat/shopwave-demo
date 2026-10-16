@@ -1,0 +1,65 @@
+openapi: 3.0.3
+info:
+  title: ShopWave Store API
+  description: Tools for the ShopWave support agent, registered in DO Action Gateway.
+  version: 1.0.0
+servers:
+  - url: https://REPLACE-WITH-YOUR-APP.ondigitalocean.app
+paths:
+  /orders/{order_id}:
+    get:
+      operationId: get_order
+      summary: Look up an order by ID (format SW-####)
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema: { type: string }
+          description: "Order ID, format SW-#### (e.g. SW-1001)"
+      responses:
+        "200": { description: Order details }
+        "404": { description: Order not found }
+        "422": { description: Invalid order ID format }
+  /orders/{order_id}/shipping:
+    get:
+      operationId: get_shipping_status
+      summary: Get shipping/carrier status for an order
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Shipping status }
+  /customers/{email}/orders:
+    get:
+      operationId: list_customer_orders
+      summary: List all orders for a customer email
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: List of orders }
+  /refunds:
+    post:
+      operationId: create_refund
+      summary: Issue a refund for an order (WRITE tool, mock in Simulations)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [order_id, reason]
+              properties:
+                order_id: { type: string, description: "Format SW-####" }
+                reason: { type: string }
+                confirmed_by_customer:
+                  type: boolean
+                  description: Customer explicitly confirmed the refund
+      responses:
+        "200": { description: Refund issued }
+        "403": { description: Outside refund window }
+        "409": { description: Already refunded }

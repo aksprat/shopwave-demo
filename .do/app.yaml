@@ -1,0 +1,27 @@
+# DigitalOcean App Platform spec — ShopWave store API (Phase 2)
+# Deploy:  doctl apps create --spec .do/app.yaml
+# Update:  doctl apps update <APP_ID> --spec .do/app.yaml
+name: shopwave-demo
+region: nyc
+services:
+  - name: store-api
+    github:
+      repo: aksprat/shopwave-demo
+      branch: main
+      deploy_on_push: true
+    source_dir: backend
+    dockerfile_path: backend/Dockerfile
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 10
+    envs:
+      - key: DATABASE_URL
+        scope: RUN_TIME
+        type: SECRET
+        value: "REPLACE_WITH_YOUR_CONNECTION_STRING"
+      - key: FAIL_MODE
+        scope: RUN_TIME
+        value: "none"
