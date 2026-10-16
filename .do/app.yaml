@@ -3,6 +3,19 @@
 # Update:  doctl apps update <APP_ID> --spec .do/app.yaml
 name: shopwave-demo
 region: ric1
+ingress:
+  rules:
+    - component:
+        name: store-api
+      match:
+        path:
+          prefix: /
+    - component:
+        name: mcp-server
+        preserve_path_prefix: true
+      match:
+        path:
+          prefix: /mcp
 services:
   - name: store-api
     github:
