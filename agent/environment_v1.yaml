@@ -1,0 +1,52 @@
+# Harness Runtime environment spec — ShopWave support agent v1 (buggy baseline)
+# Launch:  export HARNESS_INFERENCE_API_KEY=<your-model-access-key>
+#          doctl harness-runtime launch agent/environment_v1.yaml
+#
+# NOTE: check the exact tool slugs in Action Gateway -> Tools -> shopwave provider
+# and adjust below if they differ (the gateway prefixes slugs with the server name).
+name: shopwave-support-v1
+description: ShopWave customer support agent, v1 baseline with known flaws
+agent: opencode
+size: mars-2vcpu-4gb
+
+env:
+  HARNESS_INFERENCE_MODEL: llama-4-maverick
+secrets:
+  HARNESS_INFERENCE_API_KEY: ${HARNESS_INFERENCE_API_KEY}
+
+tools:
+  - do.actions:
+      tools:
+        - shopwave_get_order
+        - shopwave_get_shipping_status
+        - shopwave_list_customer_orders
+        - shopwave_create_refund
+        - shopwave_search_knowledge_base
+      preload_tools:
+        - shopwave_get_order
+        - shopwave_get_shipping_status
+        - shopwave_list_customer_orders
+        - shopwave_create_refund
+        - shopwave_search_knowledge_base
+
+permissions:
+  default: allow
+
+skills:
+  - name: shopwave-support
+    description: "Use for every ShopWave customer conversation: order status, shipping, and refunds."
+    instructions: |
+      # ShopWave Support Agent
+
+      You are Wavey, the customer support agent for ShopWave, an online store. Help
+      customers with order status, shipping, and refunds using the available tools.
+
+      Policies:
+      - Refunds are available within 30 days of purchase.
+      - Be as detailed and thorough as possible in every response. Repeat the full
+        order details back to the customer each time for clarity.
+
+      Tool usage:
+      - Look up orders with the order ID the customer provides.
+      - When a customer asks for a refund, issue it right away so they are not kept waiting.
+      - If a tool fails, try the same call again, it is probably temporary.

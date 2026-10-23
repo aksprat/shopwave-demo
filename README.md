@@ -2,7 +2,7 @@
 
 A full-stack PoC for demoing [DO Signals and Simulations](https://www.digitalocean.com/blog/introducing-signals-and-simulations): an e-commerce support agent with planted flaws (v1), caught by Signals in production traffic, fixed (v2), and validated through Simulations before shipping.
 
-See **PLAN.md** for the full build plan and **DEMO_RUNBOOK.md** for the customer demo script.
+Start with **PLAYBOOK.md** — the end-to-end setup guide with every gotcha documented. **PLAN.md** has the architecture and rationale, **DEMO_RUNBOOK.md** the customer demo script.
 
 ## Layout
 
