@@ -75,7 +75,7 @@ async def search_knowledge_base(query: str) -> dict:
         r = await c.post(
             KB_URL,
             headers={"Authorization": f"Bearer {KB_KEY}"},
-            json={"query": query},
+            json={"query": query, "num_results": 5},
         )
         if r.status_code >= 400:
             raise RuntimeError(f"HTTP {r.status_code}: {r.text[:300]}")
